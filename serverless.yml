@@ -8,8 +8,13 @@ provider:
   runtime: nodejs14.x
   region: ap-southeast-1
   timeout: 30
-  # environment:
-  # MONGODB_URL: ${param:MONGODB_URL}
+  environment:
+    MONGODB_URL: ${param:MONGODB_URL}
+    APP_URL: ${param:APP_URL}
+    GOOGLE_CLIENT_ID: ${param:GOOGLE_CLIENT_ID}
+    GOOGLE_CLIENT_SECRET: ${param:GOOGLE_CLIENT_SECRET}
+    GOOGLE_CALLBACK_URL: ${param:GOOGLE_CALLBACK_URL}
+    ID_CONFIG_GOOGLE_TOKEN: ${param:ID_CONFIG_GOOGLE_TOKEN}
 
 functions:
   api:

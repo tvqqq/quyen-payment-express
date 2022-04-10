@@ -76,7 +76,9 @@ class MomoController {
         message: "Transaction Id is not found.",
       });
     }
-    const transaction = await this.momoService.find(req.query.transId);
+    const transaction = await this.momoService.find({
+      transactionId: req.query.transId,
+    });
     return res.status(200).json({
       success: true,
       data: transaction,
