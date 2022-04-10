@@ -1,0 +1,23 @@
+org: tvqqq
+app: quyen-payment-express
+service: quyen-payment-express
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ap-southeast-1
+  timeout: 30
+  # environment:
+  # MONGODB_URL: ${param:MONGODB_URL}
+
+functions:
+  api:
+    handler: handler.serverless
+    events:
+      - httpApi: "*"
+
+  # cronFetchList:
+  #   handler: handler.cron
+  #   events:
+  #     - schedule: cron(00 14 * * ? *) # 21h UTC+7 = 14
