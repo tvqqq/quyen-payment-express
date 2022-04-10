@@ -6,8 +6,8 @@ class ConfigService extends CRUDService {
     super(Config);
   }
 
-  getGoogleTokens = async () => {
-    return await this.getModel().findById(process.env.ID_CONFIG_GOOGLE_TOKEN);
+  getGoogleTokens = () => {
+    return this.getModel().findById(process.env.ID_CONFIG_GOOGLE_TOKEN);
   };
 }
 

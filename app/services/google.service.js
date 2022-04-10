@@ -17,12 +17,13 @@ class GoogleService {
   };
 
   getRefreshGoogleClient = async () => {
-    let tokens = await this.configService.getGoogleTokens();
+    // TODO: check this function
+    let tokens = await this.configService.getGoogleTokens().exec();
     const client = this.getBaseClient();
     client.setCredentials(tokens.value);
 
     if (client.isTokenExpiring()) {
-      const { credentials } = await client.refreshAccessToken();
+      const { credentials } = await client.refreshToken();
       tokens = { ...credentials, refresh_token: tokens.refresh_token };
       await this.configService.getGoogleTokens().updateOne({
         value: tokens,

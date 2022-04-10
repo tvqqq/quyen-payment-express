@@ -22,7 +22,7 @@ functions:
     events:
       - httpApi: "*"
 
-  # cronFetchList:
-  #   handler: handler.cron
-  #   events:
-  #     - schedule: cron(00 14 * * ? *) # 21h UTC+7 = 14
+  cronWatch:
+    handler: handler.cron
+    events:
+      - schedule: cron(00 00 * * ? *)

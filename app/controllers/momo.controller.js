@@ -45,10 +45,6 @@ class MomoController {
         // id: "17892e4734616092", // TODO: testing
         auth: googleClient,
       });
-      console.log(
-        "🚀 ~ file: momo.controller.js ~ line 46 ~ MomoController ~ webhook= ~ responseMessage",
-        responseMessage
-      );
     } catch (e) {
       // Case no message entity
       return res.status(200).json({
@@ -82,6 +78,23 @@ class MomoController {
     return res.status(200).json({
       success: true,
       data: transaction,
+    });
+  };
+
+  watch = async (req, res, next) => {
+    const MOMO_LABEL_ID = "Label_8087529028700183731";
+    const MOMO_TOPIC_NAME = "projects/qeoqeo/topics/momo";
+    const googleClient = await this.googleService.getRefreshGoogleClient();
+    const gmail = google.gmail("v1");
+    const data = await gmail.users.watch({
+      userId: "me",
+      topicName: MOMO_TOPIC_NAME,
+      labelIds: MOMO_LABEL_ID,
+      auth: googleClient,
+    });
+    return res.status(200).json({
+      success: true,
+      data,
     });
   };
 }

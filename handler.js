@@ -25,15 +25,14 @@ app.use("/api", routes);
 
 const slsHandler = serverless(app);
 
-// cronjob
-// const slsCronHandler = async (event, context) => {
-//   event.path = "/api/fb/friends/fetch";
-//   const result = await slsHandler(event, context);
-//   return result;
-// };
+const slsCronHandler = async (event, context) => {
+  event.path = "/api/momo/watch";
+  const result = await slsHandler(event, context);
+  return result;
+};
 
 module.exports = {
   serverless: slsHandler,
-  // cron: slsCronHandler,
+  cron: slsCronHandler,
   default: app,
 };

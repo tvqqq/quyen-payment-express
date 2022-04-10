@@ -15,9 +15,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.2.7",
     "node-fetch": "2",
-    "open": "^8.4.0",
     "serverless-http": "^2.7.0",
-    "url": "^0.11.0",
     "xpath-html": "^1.0.3"
   }
 }

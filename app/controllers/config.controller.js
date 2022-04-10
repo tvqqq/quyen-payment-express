@@ -1,8 +1,5 @@
 const { ConfigService } = require("../services/config.service");
 const { GoogleService } = require("../services/google.service");
-const opn = require("open");
-const url = require("url");
-
 class ConfigController {
   constructor() {
     this.configService = new ConfigService();
@@ -10,24 +7,27 @@ class ConfigController {
   }
 
   googleLogin = async (req, res, next) => {
-    const oauth2Client = this.googleService.getOauth2Client();
+    const oauth2Client = this.googleService.getBaseClient();
     const authorizeUrl = oauth2Client.generateAuthUrl({
       access_type: "offline",
+      prompt: "consent",
       scope: "https://www.googleapis.com/auth/gmail.readonly",
     });
-    opn(authorizeUrl);
     return res.status(200).json({
       success: true,
+      authorizeUrl,
     });
   };
 
   googleCallback = async (req, res, next) => {
-    const oauth2Client = this.googleService.getOauth2Client();
-    const qs = new url.URL(req.url, process.env.APP_URL).searchParams;
-    const data = await oauth2Client.getToken(qs.get("code"));
+    const params = new URLSearchParams(req.url);
+    const code = params.get("/google/callback?code");
+    const oauth2Client = this.googleService.getBaseClient();
+    const data = await oauth2Client.getToken(code);
     await this.configService.getGoogleTokens().updateOne({
       value: data.tokens,
     });
+
     return res.status(200).json({
       success: true,
       data,
