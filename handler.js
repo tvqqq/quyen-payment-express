@@ -8,8 +8,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // mongoose connect
-const mongoose = require("./config/mongoose");
-mongoose.connect();
+// const mongoose = require("./config/mongoose");
+// mongoose.connect();
 
 // cors
 const cors = require("cors");
@@ -26,8 +26,14 @@ app.use("/api", routes);
 const slsHandler = serverless(app);
 
 const slsCronHandler = async (event, context) => {
-  event.path = "/api/momo/watch";
+  console.log("slsCronHandler", slsCronHandler);
+  event.path = "/api/tcb/refresh";
+  // TODO: here
+  event.query = JSON.stringify({
+    bypass: process.env.TOKEN_BYPASS_REFRESH,
+  });
   const result = await slsHandler(event, context);
+  console.log("result", result);
   return result;
 };
 

@@ -3,11 +3,14 @@ app: quyen-payment-express
 service: quyen-payment-express
 frameworkVersion: "3"
 
+plugins:
+  - serverless-iam-roles-per-function
+
 provider:
   name: aws
   runtime: nodejs14.x
   region: ap-southeast-1
-  timeout: 30
+  timeout: 5
   environment:
     MONGODB_URL: ${param:MONGODB_URL}
     APP_URL: ${param:APP_URL}
@@ -15,14 +18,26 @@ provider:
     GOOGLE_CLIENT_SECRET: ${param:GOOGLE_CLIENT_SECRET}
     GOOGLE_CALLBACK_URL: ${param:GOOGLE_CALLBACK_URL}
     ID_CONFIG_GOOGLE_TOKEN: ${param:ID_CONFIG_GOOGLE_TOKEN}
+    DDB_TABLE_NAME: ${param:DDB_TABLE_NAME}
+    TOKEN_BYPASS_REFRESH: ${param:TOKEN_BYPASS_REFRESH}
 
 functions:
   api:
     handler: handler.serverless
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE_NAME}"
     events:
       - httpApi: "*"
 
   cronWatch:
     handler: handler.cron
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE_NAME}"
     events:
-      - schedule: cron(00 00 * * ? *)
+      - schedule: rate(3 minutes)
